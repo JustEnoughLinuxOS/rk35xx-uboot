@@ -158,6 +158,7 @@ static int hwid_adc_find_dtb(const char *file_name)
 				debug("   - failed to read adc, ret=%d\n", ret);
 				return 0;
 			}
+			printf("ADCVAL: %u\n", raw_adc);
 			adc_record[channel] = raw_adc;
 		}
 
