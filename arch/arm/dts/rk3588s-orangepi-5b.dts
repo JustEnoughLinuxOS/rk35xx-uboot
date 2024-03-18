@@ -10,7 +10,7 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	model = "Orange Pi 5";
+	model = "Orange Pi 5B";
 	compatible = "rockchip,rk3588s-orangepi-5", "rockchip,rk3588";
 
 	adc-keys {
@@ -38,40 +38,12 @@
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 	};
-
-	vcc3v3_pcie2x1l2: vcc3v3-pcie2x1l2 {
-		u-boot,dm-pre-reloc;
-		compatible = "regulator-fixed";
-		regulator-name = "vcc3v3_pcie2x1l2";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		enable-active-high;
-		//regulator-boot-on;
-		//regulator-always-on;
-		gpio = <&gpio2 RK_PA1 GPIO_ACTIVE_HIGH>;
-		startup-delay-us = <50000>;
-		vin-supply = <&vcc5v0_sys>;
-	};
 };
 
-#if 1
-&sata0 {
-	u-boot,dm-pre-reloc;
-	pinctrl-names = "default";
-	pinctrl-0 = <&sata_reset>;
-	vpcie3v3-supply = <&vcc3v3_pcie2x1l2>;
-	status = "okay";
+&sfc {
+	u-boot,dm-spl;
+	status = "disabled";
 };
-
-# else
-
-&pcie2x1l2 {
-	u-boot,dm-pre-reloc;
-	reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
-	vpcie3v3-supply = <&vcc3v3_pcie2x1l2>;
-	status = "okay";
-};
-#endif
 
 &combphy0_ps {
 	u-boot,dm-pre-reloc;

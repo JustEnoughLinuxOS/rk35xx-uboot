@@ -73,8 +73,8 @@
 /* First try to boot from SD (index 1), then eMMC (index 0) */
 #if CONFIG_IS_ENABLED(CMD_MMC)
 	#define BOOT_TARGET_MMC(func) \
-		func(MMC, mmc, 1) \
-		func(MMC, mmc, 0)
+		func(MMC, mmc, 0) \
+		func(MMC, mmc, 1)
 #else
 	#define BOOT_TARGET_MMC(func)
 #endif
@@ -183,6 +183,18 @@
 		"setenv devtype spinor; setenv devnum 1;" \
 	"else" \
 		"setenv devtype ramdisk; setenv devnum 0;" \
+	"fi; \0" \
+	"rkimg_bootdev_download=" \
+	"scsi scan;" \
+	"nvme scan;" \
+	"if mmc dev 1; then " \
+		"setenv devtype mmc; setenv devnum 1;" \
+	"elif mmc dev 0; then " \
+		"setenv devtype mmc; setenv devnum 0;" \
+	"elif nvme dev 0; then " \
+		"setenv devtype nvme; setenv devnum 0;" \
+	"elif scsi dev 0; then " \
+		"setenv devtype scsi; setenv devnum 0;" \
 	"fi; \0"
 
 #if defined(CONFIG_AVB_VBMETA_PUBLIC_KEY_VALIDATE)
